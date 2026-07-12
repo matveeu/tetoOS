@@ -51,7 +51,7 @@ make run
 - kernel.c     # Ядро с терминалом
 - linker.ld    # Скрипт линковщика
 - Makefile     # Автоматизация сборки
-- makeiso.sh   # Создание ### Создание ISO для VirtualBox (уже есть готовый образ tetos.iso)
+- makeiso.sh   # Создание ISO 
 - README.md    # Этот файл
 - tetos.iso    # Готовый ISO файл
 
