@@ -6,16 +6,6 @@ int cursor_y = 0;
 char cmd_buffer[MAX_CMD];
 int cmd_index = 0;
 
-// Очистка экрана
-void clearScreen() {
-        for (unsigned int i = 0; i < 80 * 25 * 2; i += 2) {
-                video[i] = ' ';
-                video[i+1] = 0x0F;
-        }
-        cursor_x = 0;
-        cursor_y = 0;
-}
-
 unsigned char inb(unsigned short port) {
         unsigned char result;
         __asm__ volatile ("inb %1, %0" : "=a"(result) : "Nd"(port));
@@ -26,17 +16,42 @@ void outb(unsigned short port, unsigned char data) {
         __asm__ volatile ("outb %0, %1" : : "a"(data), "Nd"(port));
 }
 
+void outw(unsigned short port, unsigned short data) {
+        __asm__ volatile ("outw %0, %1" : : "a"(data), "Nd"(port));
+}
+
+void update_cursor() {
+        int pos = cursor_y * 80 + cursor_x;
+        outb(0x3D4, 0x0F);
+        outb(0x3D5, (unsigned char)(pos & 0xFF));
+        outb(0x3D4, 0x0E);
+        outb(0x3D5, (unsigned char)((pos >> 8) & 0xFF));
+}
+
+// Очистка экрана
+void clearScreen() {
+        for (unsigned int i = 0; i < 80 * 25 * 2; i += 2) {
+                video[i] = ' ';
+                video[i+1] = 0x0F;
+        }
+        cursor_x = 0;
+        cursor_y = 0;
+        update_cursor();
+}
+
 // Размещение символа в видеопамять
 void putchar(char c) {
         if (c == '\n') {
                 cursor_x = 0;
                 cursor_y++;
+                update_cursor();
         } else if (c == '\b') {
                 if (cursor_x > 0) {
                         cursor_x--;
                         int pos = (cursor_y * 80 + cursor_x) *2;
                         video[pos] = ' ';
                         video[pos + 1] = 0x0F;
+                        update_cursor();
                 }
         } else {
                 int pos = (cursor_y * 80 + cursor_x) * 2;
@@ -47,6 +62,7 @@ void putchar(char c) {
                         cursor_x = 0;
                         cursor_y++;
                 }
+                update_cursor();
         }
         if (cursor_y >= 25) {
                 for (unsigned int i = 0; i < 24 * 80 * 2; i++) {
@@ -57,13 +73,14 @@ void putchar(char c) {
                         video [i + 1] = 0x0F;
                 }
                 cursor_y = 24;
+                update_cursor();
         }
 }
 
 // Печать строки
 void print(const char* str) {
         for (unsigned int i = 0; str[i] != '\0'; i++) {
-                putchar(str[i]);
+                putchar(str[i]); 
         }
 }
 
@@ -100,6 +117,7 @@ void show_help() {
         print("  help     - show this message\n");
         print("  clear    - clear screen\n");
         print("  reboot   - restart system\n");
+        print("  poweroff - shutdown PC\n");
 }
 
 // Сами команды
@@ -112,6 +130,10 @@ void execute_command() {
                 print("Rebooting...\n");
                 outb(0x64, 0xFE); 
                 while(1);
+        } else if (cmd_buffer[0] == 'p' && cmd_buffer[1] == 'o' && cmd_buffer[2] == 'w' && cmd_buffer[3] == 'e' && cmd_buffer[4] == 'r' && cmd_buffer[5] == 'o' && cmd_buffer[6] == 'f' && cmd_buffer[7] == 'f') {
+                print("Shutting down...\n");
+                outw(0x604, 0x2000);
+                while(1);
         } else if (cmd_buffer[0] != '\0') {
                 print("Unknown command: ");
                 print(cmd_buffer);
@@ -121,7 +143,7 @@ void execute_command() {
 
 void kmain() {
         clearScreen();
-        print("TetoOS v1.0.3\n");
+        print("TetoOS v1.0.4\n");
         print("Type 'help' for commands.\n");
         print("> ");
 
