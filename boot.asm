@@ -12,6 +12,7 @@ multiboot_header:
 
 start:
         mov esp, stack_top
+        
         call kmain
         cli
         hlt
