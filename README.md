@@ -47,14 +47,13 @@ make run
 
 ## Структура проекта
 
-TetoOS/
-├── boot.asm     # Загрузчик (Multiboot)
-├── kernel.c     # Ядро с терминалом
-├── linker.ld    # Скрипт линковщика
-├── Makefile     # Автоматизация сборки
-├── makeiso.sh   # Создание ### Создание ISO для VirtualBox (уже есть готовый образ tetos.iso)
-├── README.md    # Этот файл
-└── tetos.iso    # Готовый ISO файл
+- boot.asm     # Загрузчик (Multiboot)
+- kernel.c     # Ядро с терминалом
+- linker.ld    # Скрипт линковщика
+- Makefile     # Автоматизация сборки
+- makeiso.sh   # Создание ### Создание ISO для VirtualBox (уже есть готовый образ tetos.iso)
+- README.md    # Этот файл
+- tetos.iso    # Готовый ISO файл
 
 ## Примечания
 - Проект разрабатывается в образовательных целях.
