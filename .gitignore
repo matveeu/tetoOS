@@ -1,0 +1,8 @@
+*
+.*
+
+!boot.asm
+!kernel.c
+!linker.ld
+!Makefile
+!.gitignore
