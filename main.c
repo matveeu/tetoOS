@@ -48,9 +48,10 @@ void load_history(int offset) {
 
 void kmain() {
         clear_screen();
-        print("TetoOS v1.0.6\n");
+        print("TetoOS v1.0.7\n");
         print("Type 'help' for commands.\n");
         print("> ");
+        init_timer();
 
         while(1) {
                 char ch = getchar();

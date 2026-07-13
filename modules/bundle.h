@@ -4,5 +4,6 @@
 #include "terminal/terminal.h"
 #include "keyboard/keyboard.h"
 #include "commands/commands.h"
+#include "timer/timer.h"
 
 #endif

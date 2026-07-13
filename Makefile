@@ -4,7 +4,7 @@ LD = ld
 CFLAGS = -m32 -ffreestanding -nostdlib -nostartfiles -Wall -fno-stack-protector -fno-pie -I./
 LDFLAGS = -m elf_i386 -T linker.ld
 
-SRC = main.c common/global.c modules/terminal/terminal.c modules/keyboard/keyboard.c modules/commands/commands.c
+SRC = main.c common/global.c modules/terminal/terminal.c modules/keyboard/keyboard.c modules/commands/commands.c modules/timer/timer.c
 OBJS = $(SRC:.c=.o) boot.o 
 
 all: myos.bin
