@@ -1,10 +1,22 @@
 *
 .*
 
-!boot.asm
-!kernel.c
-!linker.ld
-!Makefile
 !.gitignore
-!tetos.iso
 !README.md
+!Makefile
+!makeiso.sh
+!boot.asm
+!main.c
+!linker.ld
+!tetos.iso
+!common/
+!common/*.h
+!common/*.c
+!modules/
+!modules/**/
+!modules/**/*.c
+!modules/**/*.h
+!modules/**/*.md
+
+*.o
+myos.bin
